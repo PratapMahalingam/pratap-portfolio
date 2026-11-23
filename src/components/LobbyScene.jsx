@@ -5,9 +5,9 @@ export default function LobbyScene() {
   return (
     <div className="scene" aria-hidden="true">
       <picture className="scene-art">
-        <source media="(max-width: 720px)" srcSet="lobby-bg-sm.webp" type="image/webp" />
-        <source srcSet="lobby-bg.webp" type="image/webp" />
-        <img src="lobby-bg.jpg" alt="" fetchPriority="high" decoding="async" />
+        <source media="(max-width: 720px)" srcSet="./lobby-bg-sm.webp" type="image/webp" />
+        <source srcSet="./lobby-bg.webp" type="image/webp" />
+        <img src="./lobby-bg.jpg" alt="" fetchPriority="high" decoding="async" />
       </picture>
       <div className="scene-beams" />
       <div className="sparkles">

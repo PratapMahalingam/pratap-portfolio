@@ -41,7 +41,7 @@ export const profile = {
 
   // Put the PDF in /public with this exact file name to replace it.
   resume: {
-    href: 'Pratap_Mahalingam_Resume.pdf',
+    href: './Pratap_Mahalingam_Resume.pdf',
     downloadName: 'Pratap_Mahalingam_Resume.pdf',
   },
 }
