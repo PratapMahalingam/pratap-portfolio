@@ -2,8 +2,10 @@
 // scrolls into view. Lines always show in a speech bubble; with Sound ON
 // they are also read aloud through the browser's Web Speech API
 // (SpeechSynthesis), so there is no server or audio file involved.
-// Sound starts OFF: browsers only allow speech after a user gesture,
-// and the toggle click is that gesture.
+// Sound defaults to ON (a visitor's OFF choice is remembered). Browsers
+// block speech until the visitor first interacts with the page, so until
+// that first click/tap/keypress the lines show as bubbles and the toggle
+// reads "Tap for sound"; the first interaction then speaks the current line.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Volume2, VolumeX, X } from 'lucide-react'
@@ -15,6 +17,23 @@ const LINGER_MS = 1400 // bubble stays this long after the last line
 
 const speechSupported =
   typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window
+
+const SOUND_KEY = 'pm-buddy-sound'
+
+function initialSound() {
+  if (!speechSupported) return false
+  try {
+    if (localStorage.getItem(SOUND_KEY) === '0') return false
+  } catch {
+    /* storage unavailable */
+  }
+  return true
+}
+
+// Has the visitor interacted with the page yet? (Sticky user activation.)
+// Browsers without the API are assumed allowed; a refusal is caught below.
+const hasActivation = () =>
+  typeof navigator === 'undefined' || !navigator.userActivation || navigator.userActivation.hasBeenActive
 
 // Reading time for the silent bubble: ~3 words a second, 2.6 s minimum.
 const readMs = (text) => Math.max(2600, text.split(/\s+/).length * 330 + 1200)
@@ -83,11 +102,13 @@ function BuddyFace({ talking }) {
 }
 
 export default function Mascot() {
-  const [soundOn, setSoundOn] = useState(false)
+  const [soundOn, setSoundOn] = useState(initialSound)
+  const [waiting, setWaiting] = useState(false) // sound on, but blocked until first interaction
   const [line, setLine] = useState(null)
   const [talking, setTalking] = useState(false)
 
-  const soundRef = useRef(false)
+  const soundRef = useRef(soundOn)
+  const waitingRef = useRef(false)
   const lineRef = useRef(null)
   const queue = useRef([])
   const busy = useRef(false)
@@ -133,7 +154,14 @@ export default function Mascot() {
       }, GAP_MS)
     }
 
-    if (soundRef.current && speechSupported) {
+    const markWaiting = (w) => {
+      waitingRef.current = w
+      setWaiting(w)
+    }
+
+    if (soundRef.current && speechSupported) markWaiting(!hasActivation())
+
+    if (soundRef.current && speechSupported && !waitingRef.current) {
       const synth = window.speechSynthesis
       if (synth.speaking || synth.pending) synth.cancel()
       const u = new SpeechSynthesisUtterance(item.text)
@@ -147,7 +175,10 @@ export default function Mascot() {
       u.rate = 1
       u.pitch = 1
       u.onend = finish
-      u.onerror = finish
+      u.onerror = (e) => {
+        if (e?.error === 'not-allowed') markWaiting(true)
+        finish()
+      }
       synth.speak(u)
       // Safety net: some browsers occasionally never fire onend.
       timer.current = setTimeout(finish, readMs(item.text) * 2 + 3000)
@@ -234,8 +265,37 @@ export default function Mascot() {
     }
   }, [])
 
+  // First interaction anywhere on the page unlocks speech: say the current line.
+  useEffect(() => {
+    if (!speechSupported) return
+    const events = ['pointerdown', 'pointerup', 'mousedown', 'touchend', 'keydown', 'click']
+    const unlock = (e) => {
+      if (!waitingRef.current || !soundRef.current) return
+      if (e.target?.closest?.('.buddy')) return // the buddy's own buttons handle this
+      if (!hasActivation()) return
+      waitingRef.current = false
+      setWaiting(false)
+      present(currentLine())
+    }
+    events.forEach((t) => window.addEventListener(t, unlock, true))
+    return () => events.forEach((t) => window.removeEventListener(t, unlock, true))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [present])
+
   const toggleSound = () => {
+    if (soundOn && waitingRef.current) {
+      // "Tap for sound": this click is the unlocking gesture, so speak now.
+      waitingRef.current = false
+      setWaiting(false)
+      present(currentLine())
+      return
+    }
     const next = !soundOn
+    try {
+      localStorage.setItem(SOUND_KEY, next ? '1' : '0')
+    } catch {
+      /* ignore */
+    }
     soundRef.current = next
     setSoundOn(next)
     if (next) {
@@ -254,7 +314,11 @@ export default function Mascot() {
     }
   }
 
-  const replay = () => present(currentLine())
+  const replay = () => {
+    waitingRef.current = false
+    setWaiting(false)
+    present(currentLine())
+  }
 
   const dismiss = () => {
     token.current++
@@ -288,13 +352,13 @@ export default function Mascot() {
       <div className="buddy-dock">
         {speechSupported && (
           <button
-            className={`buddy-sound ${soundOn ? 'is-on' : ''}`}
+            className={`buddy-sound ${soundOn ? 'is-on' : ''} ${soundOn && waiting ? 'is-waiting' : ''}`}
             onClick={toggleSound}
             aria-pressed={soundOn}
             title={soundOn ? 'Turn the guide voice off' : 'Turn the guide voice on'}
           >
             {soundOn ? <Volume2 size={16} strokeWidth={2.5} /> : <VolumeX size={16} strokeWidth={2.5} />}
-            <span>Sound {soundOn ? 'ON' : 'OFF'}</span>
+            <span>{soundOn ? (waiting ? 'Tap for sound' : 'Sound ON') : 'Sound OFF'}</span>
           </button>
         )}
         <button className="buddy-avatar" onClick={replay} aria-label="Replay the guide's line">

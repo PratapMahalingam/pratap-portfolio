@@ -3182,3 +3182,10 @@ a {
     font-size: 0.98rem;
   }
 }
+.buddy-sound.is-waiting {
+  animation: buddy-nudge 1.4s ease-in-out infinite;
+}
+@keyframes buddy-nudge {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 225, 77, 0.45), 0 6px 16px rgba(5, 4, 30, 0.5); }
+  50% { box-shadow: 0 0 24px rgba(255, 225, 77, 0.95), 0 6px 16px rgba(5, 4, 30, 0.5); }
+}
