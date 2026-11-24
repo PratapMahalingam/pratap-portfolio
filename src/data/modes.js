@@ -28,7 +28,7 @@ export const modes = [
       'Investment research',
       'Financial reporting',
     ],
-    featured: ['sony', 'forage'],
+    featured: ['sony', 'forage', 'fraudmonitor'],
   },
   {
     id: 'data',
@@ -85,7 +85,7 @@ export const modes = [
       'Grouped cross-validation',
       'Data leakage prevention',
     ],
-    featured: ['mercor', 'tokyo', 'kepler', 'proteingym', 'eeg', 'dataiku'],
+    featured: ['mercor', 'tokyo', 'spatialgnn', 'graphrag', 'kepler', 'proteingym', 'eeg', 'dataiku'],
   },
   {
     id: 'business',

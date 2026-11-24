@@ -5,8 +5,114 @@
 
 export const quests = [
   {
-    id: 'flightguard',
+    id: 'fraudmonitor',
     number: '01',
+    title: 'Real-Time Fraud Monitor',
+    subtitle: 'Streaming Card-Fraud Detection with Rules + Gradient Boosting',
+    kind: 'Machine learning project',
+    track: 'ml',
+    theme: 'fraud',
+    mission: 'Catch card fraud the moment a transaction arrives, without drowning analysts in false alarms.',
+    stats: [
+      { value: '0.908', label: 'F1 (95.8% precision, 86.3% recall)' },
+      { value: '81 vs 28,825', label: 'false alarms vs rules alone' },
+      { value: '0.38 ms', label: 'median scoring time per transaction' },
+    ],
+    problem:
+      'Classic fraud rules (velocity, impossible travel, unusual amount) are easy to explain but fire constantly, so most alerts are false alarms.',
+    objective:
+      'Score every transaction in real time from per-card history, keep the rules as analyst-readable reason codes, and test on a strict time split.',
+    methods: [
+      'Per-card state in SQLite',
+      '20 causal per-card features',
+      'Gradient boosting (scikit-learn)',
+      'Velocity / travel / amount rules',
+      'Time-based train/test split',
+      'Card-level bootstrap CIs',
+    ],
+    outcomes: [
+      'Reached F1 0.908 (95.8% precision, 86.3% recall) on 555,719 held-out transactions (Jun–Dec 2020) from the simulated Sparkov dataset.',
+      'Raised 81 false alarms instead of 28,825 compared with alerting whenever any rule fires, while recall rose from 54.6% to 86.3%.',
+      'Scored each transaction in 0.38 ms median (0.84 ms p99), including the SQLite state read and write.',
+      'Showed the streaming engine reproduces the offline evaluation exactly on all 555,719 test transactions.',
+    ],
+    skills: ['Python', 'Gradient boosting', 'SQLite', 'Real-time scoring', 'Fintech'],
+    note: 'Evaluated on simulated (Sparkov) card transactions, not real bank data.',
+    links: [{ label: 'View on GitHub', href: 'https://github.com/PratapMahalingam/fintech-fraud-monitor', kind: 'code' }],
+  },
+  {
+    id: 'spatialgnn',
+    number: '02',
+    title: 'Spatial GNN Layer Annotation',
+    subtitle: 'Cortical Layer Annotation with Spatial Graph Neural Networks',
+    kind: 'Machine learning project',
+    track: 'science',
+    theme: 'spatial',
+    mission: 'Test whether a spot’s real spatial neighbours help label cortical layers in the human brain.',
+    stats: [
+      { value: '0.551 → 0.592', label: 'macro-F1 (MLP → GraphSAGE)' },
+      { value: '0.493', label: 'macro-F1 on rewired null graph' },
+      { value: '47,329', label: 'labelled Visium spots' },
+    ],
+    problem:
+      'Graph models for spatial transcriptomics report gains, but a graph gives each spot more input, so the gain could come from any neighbours rather than the real tissue layout.',
+    objective:
+      'Compare GraphSAGE on the real spatial graph against an expression-only model and a degree-preserving rewired graph, on donors the model never saw.',
+    methods: [
+      'PyTorch Geometric',
+      'GraphSAGE & GCN',
+      'k-NN spatial graph',
+      'Degree-preserving rewiring null',
+      'Leave-one-donor-out evaluation',
+      'Wilcoxon signed-rank tests',
+    ],
+    outcomes: [
+      'Raised mean per-section macro-F1 from 0.551 (expression-only MLP) to 0.592 with GraphSAGE on the real spatial graph (better on 10 of 12 sections, p = 0.007).',
+      'GraphSAGE on a degree-preserving rewired graph scored 0.493, below the MLP; real beat rewired on 12 of 12 sections (p = 0.0005).',
+      'Evaluated on 47,329 labelled spots from 12 human DLPFC 10x Visium sections across 3 donors.',
+      'Reported limits: the gain is uneven across donors and the graph makes the thin outer layers (L1, L2) worse.',
+    ],
+    skills: ['PyTorch Geometric', 'GraphSAGE', 'Spatial transcriptomics', 'Permutation nulls', 'Neuroscience'],
+    links: [{ label: 'View on GitHub', href: 'https://github.com/PratapMahalingam/spatial-transcriptomics-gnn', kind: 'code' }],
+  },
+  {
+    id: 'graphrag',
+    number: '03',
+    title: 'Biomedical Evidence RAG',
+    subtitle: 'Retrieval Pipeline + Entity-Graph Test on SciFact',
+    kind: 'Machine learning project',
+    track: 'ml',
+    theme: 'graphrag',
+    mission: 'Retrieve the right PubMed evidence for scientific claims, and test whether a knowledge graph really helps.',
+    stats: [
+      { value: '0.799 → 0.895', label: 'nDCG@10 (BM25 → MedCPT + reranker)' },
+      { value: '5,183', label: 'PubMed abstracts' },
+      { value: '188', label: 'dev claims, used once' },
+    ],
+    problem:
+      'GraphRAG systems add a knowledge graph and also pass more documents to the reader, so a reported gain may come from the extra documents rather than the graph.',
+    objective:
+      'Build a full biomedical retrieval service, then compare graph expansion against a budget-matched baseline and a degree-preserving rewired graph.',
+    methods: [
+      'BM25 + MedCPT dense retrieval',
+      'Reciprocal-rank fusion',
+      'Cross-encoder reranking',
+      'scispaCy entity graph',
+      'Rewired-graph null model',
+      'FastAPI service',
+    ],
+    outcomes: [
+      'Raised nDCG@10 from 0.799 (BM25) to 0.895 with MedCPT plus a cross-encoder reranker on SciFact (+0.096, p = 0.0001).',
+      'Showed the entity graph carries real signal: graph documents beat rewired-graph documents at context budgets of 2–10 abstracts (p ≤ 0.05, 100 rewirings).',
+      'Found the graph adds no measurable gain once the document budget is matched, a result the usual GraphRAG comparison would have hidden.',
+      'Served retrieval with sentence-level evidence and citations through a FastAPI endpoint.',
+    ],
+    skills: ['RAG', 'MedCPT', 'FastAPI', 'Biomedical NLP', 'Python'],
+    links: [{ label: 'View on GitHub', href: 'https://github.com/PratapMahalingam/biomed-graphrag-evidence', kind: 'code' }],
+  },
+  {
+    id: 'flightguard',
+    number: '04',
     title: 'FlightGuard AI',
     subtitle: 'Aviation Data Analytics & Interactive Reporting',
     kind: 'Analytics project',
@@ -41,7 +147,7 @@ export const quests = [
   },
   {
     id: 'cybercrime',
-    number: '02',
+    number: '05',
     title: 'Economics of Cybercrime',
     subtitle: 'MBA Dissertation',
     kind: 'MBA dissertation (Middlesex University Dubai)',
@@ -75,7 +181,7 @@ export const quests = [
   },
   {
     id: 'sony',
-    number: '03',
+    number: '06',
     title: 'Sony Equity Research',
     subtitle: 'Academic Equity Research & Investment Pitch',
     kind: 'Academic equity research project',
@@ -110,7 +216,7 @@ export const quests = [
   },
   {
     id: 'proteingym',
-    number: '04',
+    number: '07',
     title: 'ProteinGym Fitness Prediction',
     subtitle: 'Protein Language Models & Mutation-Effect Prediction',
     kind: 'Machine learning project',
@@ -136,7 +242,7 @@ export const quests = [
   },
   {
     id: 'kepler',
-    number: '05',
+    number: '08',
     title: 'Kepler Exoplanet Vetting',
     subtitle: 'Explainable Machine Learning on NASA Archive Data',
     kind: 'Machine learning project',
@@ -163,7 +269,7 @@ export const quests = [
   },
   {
     id: 'microns',
-    number: '06',
+    number: '09',
     title: 'MICrONS Connectome',
     subtitle: 'Structure–Function Analysis of Mouse Visual Cortex',
     kind: 'Computational neuroscience project',
@@ -189,7 +295,7 @@ export const quests = [
   },
   {
     id: 'eeg',
-    number: '07',
+    number: '10',
     title: 'EEG Movement Decoding',
     subtitle: 'Cross-Subject EEG Classification',
     kind: 'Machine learning project',
@@ -214,7 +320,7 @@ export const quests = [
   },
   {
     id: 'motor',
-    number: '08',
+    number: '11',
     title: 'Motor Cortex Spike Trains',
     subtitle: 'Single-Neuron Analysis of Motor Planning',
     kind: 'Computational neuroscience project',
@@ -238,7 +344,7 @@ export const quests = [
   },
   {
     id: 'morphology',
-    number: '09',
+    number: '12',
     title: 'Neuron Morphology',
     subtitle: 'Dendritic Branching Analysis Across Brain Regions',
     kind: 'Computational neuroscience project',
@@ -262,7 +368,7 @@ export const quests = [
   },
   {
     id: 'allen',
-    number: '10',
+    number: '13',
     title: 'Allen Brain Atlas Gene Expression',
     subtitle: 'Regional Gene Expression in the Human Brain',
     kind: 'Bioinformatics project',

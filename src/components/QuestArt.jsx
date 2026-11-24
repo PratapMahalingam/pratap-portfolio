@@ -142,6 +142,9 @@ const sciPalettes = {
   spikes: ['#4a1240', '#1c0618', '#ff9f5a'],
   morphology: ['#1f4d1a', '#0a2008', '#b8ff6a'],
   genes: ['#5e3a0a', '#2a1704', '#ffcf5a'],
+  fraud: ['#0d3b3a', '#041716', '#ff4d5e'],
+  spatial: ['#3b1a5e', '#12062a', '#ffb3f0'],
+  graphrag: ['#0a3a5e', '#04162a', '#7dffb0'],
 }
 
 function rng(seed) {
@@ -246,6 +249,82 @@ function Motif({ theme, c }) {
             <path key={i} d={`M${x} ${y} L${x2} ${y2}`} stroke={c} strokeWidth={d * 1.2} strokeLinecap="round" />
           ))}
           <circle cx="200" cy="205" r="14" fill={c} stroke="#0a0d2a" strokeWidth="3" />
+        </g>
+      )
+    }
+    case 'fraud':
+      return (
+        <g>
+          {[40, 80, 120, 160, 200].map((y, row) => (
+            <g key={y}>
+              <path d={`M0 ${y} H400`} stroke="#ffffff" strokeOpacity="0.12" strokeWidth="2" />
+              {Array.from({ length: 13 }, (_, i) => {
+                const x = 16 + i * 30 + (row % 2) * 14
+                const flagged = (i * 7 + row * 3) % 17 === 0
+                return (
+                  <rect
+                    key={i}
+                    x={x - 7}
+                    y={y - 7}
+                    width="14"
+                    height="14"
+                    rx="3"
+                    fill={flagged ? c : '#ffffff'}
+                    opacity={flagged ? 1 : 0.35 + r() * 0.35}
+                    stroke={flagged ? '#0a0d2a' : 'none'}
+                    strokeWidth="2.5"
+                    className={flagged ? 'qa-pulse' : undefined}
+                  />
+                )
+              })}
+            </g>
+          ))}
+          <path d="M300 10 V210" stroke={c} strokeOpacity="0.7" strokeWidth="2" strokeDasharray="5 5" />
+        </g>
+      )
+    case 'spatial': {
+      const layers = ['#ffb3f0', '#ff7ae0', '#c45ad8', '#8a4fe0', '#5a6cf0', '#5fe0ff', '#ffffff']
+      const spots = []
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 18; col++) {
+          const x = 22 + col * 21 + (row % 2) * 10.5
+          const y = 24 + row * 22
+          const band = Math.min(6, Math.floor((y + Math.sin(x / 60) * 14 - 14) / 29))
+          spots.push([x, y, band])
+        }
+      }
+      return (
+        <g>
+          {spots.map(([x, y], i) =>
+            i % 18 < 17 ? <path key={`e${i}`} d={`M${x} ${y} L${spots[i + 1][0]} ${spots[i + 1][1]}`} stroke="#ffffff" strokeOpacity="0.15" strokeWidth="1.5" /> : null,
+          )}
+          {spots.map(([x, y, b], i) => (
+            <circle key={i} cx={x} cy={y} r="7" fill={layers[Math.max(0, b)]} opacity="0.9" stroke="#0a0d2a" strokeWidth="1.5" />
+          ))}
+        </g>
+      )
+    }
+    case 'graphrag': {
+      const docs = [[60, 50], [60, 110], [60, 170], [340, 50], [340, 110], [340, 170]]
+      const ents = [[170, 70], [200, 130], [230, 75], [180, 185], [225, 175]]
+      return (
+        <g>
+          {docs.map(([dx, dy], i) =>
+            ents
+              .filter((_, j) => (i + j) % 3 !== 1)
+              .map(([ex, ey], j) => (
+                <path key={`${i}-${j}`} d={`M${dx} ${dy} L${ex} ${ey}`} stroke={c} strokeOpacity="0.4" strokeWidth="2" />
+              )),
+          )}
+          {docs.map(([x, y], i) => (
+            <g key={i}>
+              <rect x={x - 20} y={y - 24} width="40" height="48" rx="4" fill="#ffffff" stroke="#0a0d2a" strokeWidth="3" />
+              <path d={`M${x - 12} ${y - 10} H${x + 12} M${x - 12} ${y} H${x + 12} M${x - 12} ${y + 10} H${x + 4}`} stroke="#0a3a5e" strokeOpacity="0.6" strokeWidth="2.5" />
+            </g>
+          ))}
+          {ents.map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="11" fill={c} stroke="#0a0d2a" strokeWidth="3" className="qa-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
+          ))}
         </g>
       )
     }

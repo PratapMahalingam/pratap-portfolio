@@ -2672,6 +2672,9 @@ a {
 .quest--spikes { --q: #a33a6e; --q2: #ff9f5a; }
 .quest--morphology { --q: #3f8f2a; --q2: #b8ff6a; }
 .quest--genes { --q: #a36b12; --q2: #ffcf5a; }
+.quest--fraud { --q: #c8283a; --q2: #ff4d5e; }
+.quest--spatial { --q: #9a3fd0; --q2: #ffb3f0; }
+.quest--graphrag { --q: #1a7a5e; --q2: #7dffb0; }
 .quest-toolbar {
   display: flex;
   flex-wrap: wrap;
