@@ -1,0 +1,307 @@
+/* ─── QUEST CARD ART: ambient motion ───────────────────────────
+   Every effect is a CSS keyframe on transform, opacity, fill or stroke,
+   so the global .reduce-motion rule switches all of it off and each
+   element falls back to the static illustration. */
+
+.quest-art-svg[data-offscreen] * {
+  animation-play-state: paused !important;
+}
+
+/* shared: a short bright dash that runs the length of a path (needs pathLength="1") */
+.qa-travel {
+  stroke-dasharray: 0.14 1;
+  stroke-dashoffset: 0.14;
+  animation: qa-travel 3s linear infinite;
+}
+@keyframes qa-travel {
+  to { stroke-dashoffset: -1; }
+}
+
+/* shared: content drawn twice over 800 units, slid left by one copy */
+.qa-scroll-400 {
+  animation: qa-scroll-400 10s linear infinite;
+}
+@keyframes qa-scroll-400 {
+  to { transform: translateX(-400px); }
+}
+
+/* ── aviation ── */
+.qa-av-blip {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-av-blip 6s ease-out infinite;
+}
+@keyframes qa-av-blip {
+  0% { opacity: 1; transform: scale(1.7); }
+  25% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0.45; transform: scale(1); }
+}
+.qa-av-ring {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-av-ring 6s ease-out infinite;
+}
+@keyframes qa-av-ring {
+  0% { opacity: 0.9; transform: scale(1); }
+  22%, 100% { opacity: 0; transform: scale(4.5); }
+}
+.qa-av-trace {
+  stroke-dasharray: 0.12 1;
+  animation-duration: 4s;
+}
+
+/* ── cyber ── */
+.qa-cy-fall {
+  animation: qa-cy-fall 8s linear infinite;
+}
+@keyframes qa-cy-fall {
+  0% { transform: translateY(-10px); opacity: 0; }
+  12% { opacity: 0.7; }
+  80% { opacity: 0.7; }
+  100% { transform: translateY(240px); opacity: 0; }
+}
+.qa-cy-packet {
+  stroke-dasharray: 0.16 1;
+  animation-duration: 2.4s;
+}
+.qa-cy-glint {
+  opacity: 0;
+  animation: qa-cy-glint 4.8s ease-in-out infinite;
+}
+@keyframes qa-cy-glint {
+  0%, 70%, 100% { opacity: 0; }
+  80% { opacity: 0.22; }
+}
+
+/* ── finance ── */
+.qa-fi-tick {
+  animation: qa-fi-tick 4.5s ease-in-out infinite;
+}
+@keyframes qa-fi-tick {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.qa-fi-trend {
+  animation: qa-fi-trend 1.6s linear infinite;
+}
+@keyframes qa-fi-trend {
+  to { stroke-dashoffset: -24; }
+}
+.qa-fi-coin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-fi-coin 7s ease-in-out infinite;
+}
+@keyframes qa-fi-coin {
+  0%, 78%, 100% { transform: scaleX(1); }
+  85% { transform: scaleX(0.08); }
+  92% { transform: scaleX(1); }
+}
+
+/* ── protein: rotating double helix ── */
+.qa-helix-a,
+.qa-helix-b {
+  animation: 3s ease-in-out infinite alternate;
+}
+.qa-helix-a { animation-name: qa-helix-a; }
+.qa-helix-b { animation-name: qa-helix-b; }
+@keyframes qa-helix-a {
+  from { transform: translateY(calc(var(--y0) + 45px)); }
+  to { transform: translateY(calc(var(--y0) - 45px)); }
+}
+@keyframes qa-helix-b {
+  from { transform: translateY(calc(var(--y0) - 45px)); }
+  to { transform: translateY(calc(var(--y0) + 45px)); }
+}
+.qa-helix-rung {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-helix-rung 3s ease-in-out infinite;
+}
+@keyframes qa-helix-rung {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.02); }
+}
+
+/* ── space ── */
+.qa-twinkle {
+  animation: qa-twinkle 3s ease-in-out infinite;
+}
+@keyframes qa-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 1; }
+}
+.qa-sp-glow {
+  animation: qa-sp-glow 6s ease-in-out infinite;
+}
+@keyframes qa-sp-glow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ── connectome ── */
+.qa-cn-signal {
+  stroke-dasharray: 0.18 1;
+  animation: qa-cn-signal 5s linear infinite;
+}
+@keyframes qa-cn-signal {
+  0% { stroke-dashoffset: 0.18; }
+  36%, 100% { stroke-dashoffset: -1; }
+}
+
+/* ── spike raster ── */
+.qa-sk-spike {
+  animation: qa-sk-spike 5s linear infinite;
+}
+@keyframes qa-sk-spike {
+  0% { stroke-opacity: 1; stroke-width: 4; }
+  14%, 100% { stroke-opacity: var(--o); stroke-width: 2.5; }
+}
+.qa-playhead,
+.qa-fr-scan {
+  animation: qa-sweep-x 6s linear infinite;
+}
+@keyframes qa-sweep-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(400px); }
+}
+
+/* ── morphology ── */
+.qa-mo-sway {
+  transform-origin: 200px 205px;
+  animation: qa-mo-sway 9s ease-in-out infinite;
+}
+@keyframes qa-mo-sway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+.qa-mo-ap {
+  stroke-dasharray: 0.3 1;
+  stroke-dashoffset: 0.3;
+  stroke-opacity: 0.85;
+  animation: qa-mo-ap 4s linear infinite;
+}
+@keyframes qa-mo-ap {
+  0% { stroke-dashoffset: 0.3; }
+  12.5%, 100% { stroke-dashoffset: -1; }
+}
+.qa-mo-soma {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-mo-soma 4s ease-out infinite;
+}
+@keyframes qa-mo-soma {
+  0% { transform: scale(1.18); }
+  20%, 100% { transform: scale(1); }
+}
+
+/* ── fraud monitor ── */
+.qa-fr-txn {
+  animation: qa-fr-txn 5s linear infinite;
+}
+@keyframes qa-fr-txn {
+  0% { transform: translateX(-10px); opacity: 0; }
+  8%, 92% { opacity: 0.9; }
+  100% { transform: translateX(410px); opacity: 0; }
+}
+.qa-fr-alert {
+  animation: qa-fr-alert 18s linear infinite;
+}
+@keyframes qa-fr-alert {
+  0%, 9% { fill: var(--c); opacity: 1; stroke-opacity: 1; }
+  15%, 100% { fill: #ffffff; opacity: var(--o); stroke-opacity: 0; }
+}
+.qa-fr-ripple {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-fr-ripple 18s ease-out infinite;
+}
+@keyframes qa-fr-ripple {
+  0% { opacity: 0.9; transform: scale(1); }
+  7%, 100% { opacity: 0; transform: scale(3.2); }
+}
+
+/* ── spatial transcriptomics: slow, tissue-like ── */
+.qa-sg-band {
+  animation: qa-sg-band 9s ease-in-out infinite;
+}
+@keyframes qa-sg-band {
+  0%, 100% { opacity: 0.82; }
+  50% { opacity: 1; }
+}
+.qa-sg-decide {
+  animation: qa-sg-decide 12s ease-in-out infinite;
+}
+@keyframes qa-sg-decide {
+  0%, 40%, 100% { fill: var(--f0); }
+  60%, 75% { fill: var(--f1); }
+}
+.qa-sg-sheen {
+  animation: qa-sg-sheen 16s linear infinite;
+}
+@keyframes qa-sg-sheen {
+  from { transform: translateX(0); }
+  to { transform: translateX(560px); }
+}
+
+/* ── graph RAG: query → entities → results, one query doc per 3s window ── */
+.qa-rag-in,
+.qa-rag-out {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: 9s ease-in-out infinite;
+}
+.qa-rag-in { animation-name: qa-rag-in; }
+.qa-rag-out { animation-name: qa-rag-out; }
+@keyframes qa-rag-in {
+  0% { stroke-dashoffset: 1; opacity: 0.95; }
+  10% { stroke-dashoffset: 0; }
+  26% { stroke-dashoffset: 0; opacity: 0.95; }
+  32%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes qa-rag-out {
+  0%, 12% { stroke-dashoffset: 1; opacity: 0.95; }
+  22% { stroke-dashoffset: 0; }
+  26% { stroke-dashoffset: 0; opacity: 0.95; }
+  32%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.qa-rag-halo {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qa-rag-halo 9s ease-out infinite;
+}
+@keyframes qa-rag-halo {
+  0%, 9% { opacity: 0; transform: scale(1); }
+  10% { opacity: 0.95; transform: scale(1); }
+  20%, 100% { opacity: 0; transform: scale(2.3); }
+}
+.qa-rag-query,
+.qa-rag-result {
+  opacity: 0;
+  animation: 9s ease-in-out infinite;
+}
+.qa-rag-query { animation-name: qa-rag-query; }
+.qa-rag-result { animation-name: qa-rag-result; }
+@keyframes qa-rag-query {
+  0% { opacity: 1; }
+  26% { opacity: 1; }
+  32%, 100% { opacity: 0; }
+}
+@keyframes qa-rag-result {
+  0%, 19% { opacity: 0; }
+  23%, 27% { opacity: 1; }
+  32%, 100% { opacity: 0; }
+}
+
+/* ── gene expression heatmap ── */
+.qa-gx-cell {
+  animation: qa-gx-cell 5.5s ease-in-out infinite alternate;
+}
+@keyframes qa-gx-cell {
+  from { opacity: var(--o); }
+  to { opacity: var(--o2); }
+}
