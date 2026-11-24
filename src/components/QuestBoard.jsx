@@ -53,6 +53,7 @@ export default function QuestBoard() {
             return (
               <motion.article
                 key={q.id}
+                data-quest={q.id}
                 layout
                 className={`quest-card quest--${q.theme} ${relevant ? 'is-relevant' : ''}`}
                 initial={{ opacity: 0, y: 30, scale: 0.97 }}

@@ -13,6 +13,7 @@ import SquadUp from './components/SquadUp.jsx'
 import Footer from './components/Footer.jsx'
 import DropMap from './components/DropMap.jsx'
 import IntroScreen from './components/IntroScreen.jsx'
+import Mascot from './components/Mascot.jsx'
 
 function Shell() {
   const { reduceMotion } = useApp()
@@ -37,6 +38,7 @@ function Shell() {
         <SquadUp />
       </main>
       <Footer />
+      <Mascot />
       <QuestBriefing />
       <DropMap />
       <IntroScreen />
