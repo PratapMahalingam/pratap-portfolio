@@ -6,7 +6,7 @@ import { profile } from '../data/profile.js'
 
 export const TABS = [
   { id: 'lobby', label: 'Lobby', plain: 'Home' },
-  { id: 'play', label: 'Play', plain: 'Career paths' },
+  { id: 'play', label: 'Play', plain: 'Career Paths' },
   { id: 'quests', label: 'Quests', plain: 'Projects' },
   { id: 'battlepass', label: 'Battle Pass', plain: 'Experience' },
   { id: 'locker', label: 'Locker', plain: 'Skills' },

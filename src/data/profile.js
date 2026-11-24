@@ -8,7 +8,7 @@ export const profile = {
   name: 'Pratap Mahalingam',
   firstName: 'Pratap',
   lastName: 'Mahalingam',
-  headline: 'Business Operations | Finance & Investment Research | Data & AI',
+  headline: 'Data & AI | Finance & Investment Research | Business Operations',
   tagline: 'Turning Data, Finance & AI Into Better Decisions',
   location: 'Dubai',
 

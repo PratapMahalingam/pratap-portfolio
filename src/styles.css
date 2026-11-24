@@ -2647,9 +2647,9 @@ a {
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 700;
-  font-size: 0.68rem;
+  font-size: 10px;
   letter-spacing: 0.08em;
-  opacity: 0.75;
+  opacity: 0.6;
 }
 .tab-hl {
   inset: 9px 2px;
